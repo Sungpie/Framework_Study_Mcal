@@ -1,0 +1,6 @@
+# STM32 및 임베디드 빌드 산출물 제외
+*.o
+*.bin
+*.elf
+*.map
+__dump*.txt
