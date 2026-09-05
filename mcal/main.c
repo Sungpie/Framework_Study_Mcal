@@ -69,11 +69,12 @@ void Main(void)
 
 	uint32_t last_second = 0;
 
-	// mcal_pwm_init(1, 1000, 1000);
 
-	// mcal_pwm_start(1, 1, 10);
-	// mcal_pwm_start(1, 2, 100);
-	// mcal_pwm_start(1, 3, 100);
+	mcal_pwm_init(5, 1000, 1000);
+
+	mcal_pwm_start(5, 1, 100);
+	mcal_pwm_start(5, 2, 10);
+	mcal_pwm_start(5, 3, 25);
 
 	// // 1. GPIOA 클록 활성화
     // MCAL_SET_BIT(RCC->AHB1ENR, 0);
@@ -85,7 +86,7 @@ void Main(void)
     // // 3. PA2 핀에 3.3V(High) 출력
     // MCAL_SET_BIT(GPIOA->ODR, 2);
 	#endif
-
+	
 	for(;;)
 	{
 		// ------------테스트용 코드--------------
