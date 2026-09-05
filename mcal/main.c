@@ -3,6 +3,8 @@
 #include "timer.h"
 #include "pwm.h"
 
+// ------------테스트용 코드--------------
+#if 0
 volatile uint32_t second = 0;
 
 void TIM1_UP_TIM10_IRQHandler(void)
@@ -11,6 +13,14 @@ void TIM1_UP_TIM10_IRQHandler(void)
 	MCAL_CLEAR_BIT(TIM1->SR, 0);
 	NVIC_ClearPendingIRQ(25);
 }
+
+void TIM5_IRQHandler(void)
+{
+	second++;
+	MCAL_CLEAR_BIT(TIM5->SR, 0);
+	NVIC_ClearPendingIRQ(50);
+}
+#endif
 
 void Clock_Init(void)
 {
@@ -31,8 +41,6 @@ void Clock_Init(void)
     while(MCAL_EXTRACT_AREA(RCC->CFGR, 0x3, 2) != 0x2);
 }
 
-
-#if 1
 static void Sys_Init(int baud) 
 {
 	SCB->CPACR |= (0x3 << 10*2)|(0x3 << 11*2); 
@@ -46,7 +54,6 @@ static void Sys_Init(int baud)
 	MCAL_CLEAR_BIT(GPIOA->ODR, 5);
 	
 }
-#endif
 
 void _Invalid_ISR(void) { while(1); }
 
@@ -54,16 +61,19 @@ void Main(void)
 {
 	Sys_Init(115200);
 
-	// mcal_timer_repeat_init(0, 10000, 10000);
-	// mcal_timer_start(0);
+	// ------------테스트용 코드--------------
+	#if 0
+	mcal_timer_repeat_init(5, 10000, 10000);
+	// mcal_timer_oneshot_init(4, 10000, 10000);
+	mcal_timer_start(5);
 
-	// uint32_t last_second = 0;
+	uint32_t last_second = 0;
 
-	mcal_pwm_init(2, 1000, 1000);
+	// mcal_pwm_init(1, 1000, 1000);
 
-	mcal_pwm_start(2, 1, 10);
-	mcal_pwm_start(2, 2, 100);
-	mcal_pwm_start(2, 3, 100);
+	// mcal_pwm_start(1, 1, 10);
+	// mcal_pwm_start(1, 2, 100);
+	// mcal_pwm_start(1, 3, 100);
 
 	// // 1. GPIOA 클록 활성화
     // MCAL_SET_BIT(RCC->AHB1ENR, 0);
@@ -74,14 +84,17 @@ void Main(void)
 
     // // 3. PA2 핀에 3.3V(High) 출력
     // MCAL_SET_BIT(GPIOA->ODR, 2);
+	#endif
+
 	for(;;)
 	{
-		// if(second != last_second)
-		// {
-		// 	last_second = second;
-		// 	MCAL_INVERT_BIT(GPIOA->ODR, 5);
-		// }
-
-
+		// ------------테스트용 코드--------------
+		#if 0
+		if(second != last_second)
+		{
+			last_second = second;
+			MCAL_INVERT_BIT(GPIOA->ODR, 5);
+		}
+		#endif
 	}
 }
